@@ -6,7 +6,7 @@ Resources:
     Properties:
       Handler: index.handler
       Runtime: nodejs8.10
-      CodeUri: s3://bucket/keyhelloworld
+      CodeUri: s3://bucket/helloworld
       Events:
         HelloWorldApi:
           Type: Api
