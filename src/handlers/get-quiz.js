@@ -3,7 +3,7 @@
  */
 exports.getQuizHandler = async (event, context, callback) => {
   const id = event.pathParameters.id;
-  console.log("Path id:", id);
+  console.log("Path parameter: ", id);
   callback(null, { statusCode: 200, body: `Path id: ${id}` });
   return id;
 };
