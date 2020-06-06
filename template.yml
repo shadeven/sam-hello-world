@@ -37,7 +37,7 @@ Resources:
           - subnet-01171904f4759f40f     
       Policies:
         - AWSLambdaBasicExecutionRole
-      # CodeUri: get-quiz/  
+      # CodeUri: s3://aws-sam-cli-managed-default-samclisourcebucket-1b4he992rn0iz/
       Events:
         GetQuiz:
           Type: Api
