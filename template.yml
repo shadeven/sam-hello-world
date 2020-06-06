@@ -1,15 +1,56 @@
-AWSTemplateFormatVersion : '2010-09-09'
-Transform: AWS::Serverless-2016-10-31
+# This is the SAM template that represents the architecture of your serverless application
+# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-template-basics.html
+
+# The AWSTemplateFormatVersion identifies the capabilities of the template
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/format-version-structure.html
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  nui
+
+# Transform section specifies one or more macros that AWS CloudFormation uses to process your template
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-section-structure.html
+Transform:
+- AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Runtime: nodejs12.x
+    Timeout: 20
+
+# Resources declares the AWS resources that you want to include in the stack
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
 Resources:
-  HelloWorldFunction:
+  # Each Lambda function is defined by properties:
+  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+
+  getQuizFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: index.handler
-      Runtime: nodejs8.10
-      CodeUri: s3://helloworld
+      Handler: src/handlers/get-quiz.getQuizHandler
+      Description: A Lambda function that returns a quiz by id.
+      VpcConfig:
+        SecurityGroupIds:
+          - sg-06a305774961a92d0
+        SubnetIds:
+          - subnet-0f3af9eeb86c5e1d5
+          - subnet-0f35aa4c99c4ac7cf
+          - subnet-01171904f4759f40f     
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      # CodeUri: get-quiz/  
       Events:
-        HelloWorldApi:
+        GetQuiz:
           Type: Api
           Properties:
-            Path: /
-            Method: GET
+            Path: /quiz/{id}
+            Method: get
+            RequestParameters: 
+              - method.request.path.id
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  GetQuizApi:
+    Description: "API Gateway endpoint URL for Production stage for getQuizFunction"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/quiz/"        
