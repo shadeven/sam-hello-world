@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "nui-qa"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1b4he992rn0iz"
+s3_prefix = "nui-qa"
+region = "ap-southeast-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+
